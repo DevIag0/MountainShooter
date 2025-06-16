@@ -24,7 +24,7 @@ class Menu:
 
             for i in range(len(MENU_OPTION)):
                 self.menu_text(text_size=30, text=MENU_OPTION[i], text_color=(COLOR_WHITE),
-                               text_center_pos=(WINDOW_WIDTH, 180 + 30 * i))
+                               text_center_pos=(WINDOW_WIDTH - 20, 180 + 30 * i))
 
             py.display.flip()  # atualizar a tela
             #checar eventos
