@@ -12,25 +12,46 @@ class Menu:
         self.rect = self.surf.get_rect(left=0, top=0) # definir a posição da imagem de fundo
 
     def run(self, ):
+        menu_option: int = 0 # variável para armazenar a opção do menu selecionada
         py.mixer.music.load("./asset/Menu.mp3")  # carregar a música de fundo
         py.mixer_music.play(-1) # tocar a música de fundo em loop
 
         while True:
-            self.window.blit(source=self.surf, dest=self.rect) # desenhar a imagem de fundo
+            # desenhar a imagem de fundo
+            self.window.blit(source=self.surf, dest=self.rect)
             self.menu_text(text_size=50, text="Mountain", text_color=(COLOR_ORANGE),
                            text_center_pos=((WINDOW_WIDTH - 20), 70))  # desenhar o texto "Mountain"
             self.menu_text(text_size=50, text="Shooter", text_color=(COLOR_ORANGE),
-                           text_center_pos=(WINDOW_WIDTH - 20, 120))  # desenhar o texto "Mountain"
+                           text_center_pos=(WINDOW_WIDTH - 20, 120))  # desenhar o texto "Shooter"
 
-            for i in range(len(MENU_OPTION)):
-                self.menu_text(text_size=30, text=MENU_OPTION[i], text_color=(COLOR_WHITE),
+            for i in range(len(MENU_OPTION)): # iterar sobre as opções do menu
+                if i == menu_option:
+                    self.menu_text(text_size=30, text=MENU_OPTION[i], text_color=(COLOR_ORANGE),
+                                   text_center_pos=(WINDOW_WIDTH - 20, 180 + 30 * i))
+                else:
+                    self.menu_text(text_size=30, text=MENU_OPTION[i], text_color=(COLOR_WHITE),
                                text_center_pos=(WINDOW_WIDTH - 20, 180 + 30 * i))
 
             py.display.flip()  # atualizar a tela
+
             #checar eventos
             for event in py.event.get():
                 if event.type == py.QUIT: #fechar a janela
                     py.quit() #fechar o pygame
+                if event.type == py.KEYDOWN:
+                    if event.key == py.K_DOWN:  # tecla para baixo
+                        menu_option += 1
+                        if menu_option >= len(MENU_OPTION):
+                            menu_option = 0
+
+                    if event.key == py.K_UP:  # tecla para cima
+                        menu_option -= 1
+                        if menu_option < 0:
+                            menu_option = len(MENU_OPTION) - 1
+
+                    if event.key == py.K_RETURN:  # tecla enter
+                        return MENU_OPTION[menu_option]
+
 
     def menu_text(self, text_size: int, text: str, text_color: tuple, text_center_pos: tuple):
         text_font: Font = py.font.SysFont("Lucida Sans Typewriter", size=text_size)  # carregar a fonte
